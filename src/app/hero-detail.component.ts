@@ -17,6 +17,6 @@ import { Hero } from './hero';
 })
 
 export class HeroDetailComponent {
-  // 绑定到目标属性 [hero] 必须是一个输入属性，否则会报错，在属性定以前加上 @Input 装饰器，表明是一个输入属性
+  // 绑定到目标属性 [hero] 必须是一个输入属性，否则会报错，在属性定义前加上 @Input 装饰器，表明是一个输入属性
   @Input() hero: Hero;
 }
