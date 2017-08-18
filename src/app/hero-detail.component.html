@@ -1,0 +1,10 @@
+<div *ngIf="hero">
+  <!-- 未选中之前selectedHer = undefined,通过ngIf 避免报错 -->
+  <h2>{{hero.name}} details!</h2>
+  <div><label>id: </label>{{hero.id}}</div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="hero.name" placeholder="name">
+  </div>
+  <button (click)="goBack()">Back</button>
+</div>
