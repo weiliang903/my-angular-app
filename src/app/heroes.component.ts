@@ -21,6 +21,9 @@ import { HeroService } from './hero.service';
 })
 
 export class HeroesComponent implements OnInit {
+  heroes: Hero[];
+  selectedHero: Hero;
+
   // 构造函数不应该包含复杂的逻辑, 常用来把构造函数的参数赋值给属性
   // 在参数中定义了一个私有的heroService属性，并把它标记为注入HeroService的靶点
   constructor(
@@ -28,15 +31,11 @@ export class HeroesComponent implements OnInit {
     private heroService: HeroService
   ) { }
 
-  title = 'Tour of Heroes';
-  heroes: Hero[];
-  selectedHero: Hero;
-
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
   }
   getHeroes(): void {
-    this.heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
+    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
   }
   // Angualr 会主动调用 ngOnInit 生命周期钩子 => 组件生命周期的几个关键时间点：刚创建时、每次变化时，以及最终被销毁时。
   // 在AppComponent激活时获取英雄数据
@@ -46,6 +45,22 @@ export class HeroesComponent implements OnInit {
 
   gotoDetail(): void {
     this.router.navigate([ '/detail', this.selectedHero.id ]);
+  }
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.create(name)
+      .then(hero => {
+        this.heroes.push(hero);
+        this.selectedHero = null;
+      });
+  }
+  delete(hero: Hero): void {
+    this.heroService.delete(hero.id)
+      .then(() => {
+        this.heroes = this.heroes.filter(h => h !== hero);
+        if (this.selectedHero === hero) { this.selectedHero = null; }
+      });
   }
 }
 
